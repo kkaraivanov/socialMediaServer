@@ -2,6 +2,7 @@ const app = require('express')();
 const env = process.env.NODE_ENV || 'development';
 const config = require('./config/config')[env]
 const db = require('./config/database')
+const express = require('./config/express')
 
 async function start(){
     try {
@@ -11,7 +12,8 @@ async function start(){
         return process.exit(1);
     }
 
-    // TODO use dependency
+    // set dependency
+    express.init(app);
     app.listen(config.port, err => {
         if (err) {
             console.info(err);
