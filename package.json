@@ -1,0 +1,33 @@
+{
+  "name": "social-media-server",
+  "version": "1.0.0",
+  "description": "rest api",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd ./src/ && node index.js",
+    "dev": "cd ./src/ && nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kkaraivanov/socialMediaServer.git"
+  },
+  "author": "Kostadin Karaivanov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kkaraivanov/socialMediaServer/issues"
+  },
+  "homepage": "https://github.com/kkaraivanov/socialMediaServer#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-handlebars": "^6.0.6",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
