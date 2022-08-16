@@ -22,16 +22,27 @@ const bodyDataValidate = [
 ]
 //TODO set all method 'GET' only for administrator role
 
-//TODO set register method 'POST'
-router.post('/register', bodyDataValidate, (req, res) => {
-    res.status(200).json('You is registered... COOL!!!')
+// register method 'POST'
+router.post('/register', bodyDataValidate, async (req, res) => {
+    try {
+        const {email, password} = req.body
+        await service.register(email, password);
+        // I am considering  what object to return to the user --> jwt + user data
+        res.status(201).json('You is registered... COOL!!!')
+    } catch (error) {
+        console.info(`Register Error: ${error.message}`)
+        res.status(409).json({ message: error.message });
+    }
+    
 })
 //TODO set edit method 'PUT/PACH'
 
 //TODO set delete method 'DELETE'
 
-//TODO set login method 'POST'
-
+// login method 'POST'
+router.post('/login', bodyDataValidate, (req, res) => {
+    res.status(200).json('You is loged in... COOL!!!')
+})
 //TODO set logout method 'GET'
 
 
