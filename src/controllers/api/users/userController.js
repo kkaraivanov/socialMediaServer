@@ -26,7 +26,7 @@ const bodyDataValidate = [
 router.post('/register', bodyDataValidate, async (req, res) => {
     try {
         const {email, password} = req.body
-        await service.register(email, password);
+        await service.create(email, password);
         // I am considering  what object to return to the user --> jwt + user data
         res.status(201).json('You is registered... COOL!!!')
     } catch (error) {
@@ -40,8 +40,18 @@ router.post('/register', bodyDataValidate, async (req, res) => {
 //TODO set delete method 'DELETE'
 
 // login method 'POST'
-router.post('/login', bodyDataValidate, (req, res) => {
-    res.status(200).json('You is loged in... COOL!!!')
+router.post('/login', bodyDataValidate, async (req, res) => {
+    try {
+        const {email, password} = req.body
+        const login = await service.getOne(email, password);
+
+        // TODO set jwt token and return user data object
+        res.status(200).json('You is loged in... COOL!!!')
+    } catch (error) {
+        console.info(error.message)
+        res.status(401).json({ message: error.message });
+    }
+    
 })
 //TODO set logout method 'GET'
 
