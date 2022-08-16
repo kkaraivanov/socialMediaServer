@@ -12,7 +12,7 @@ async function start(){
         return process.exit(1);
     }
 
-    // set dependency
+    // dependency
     express.init(app);
     app.listen(config.port, err => {
         if (err) {

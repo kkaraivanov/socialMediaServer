@@ -19,7 +19,8 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, 'Password is required'],
-        min: 5
+        min: 5,
+        max: 12
     },
     roles: {
         type: Array,

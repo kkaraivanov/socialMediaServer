@@ -15,10 +15,10 @@ const options = {
 
 const userController = require('./users/userController')
 
-// set cors for route access
+// cors for route access
 router.use(cors(options))
 
-// TODO set users controllers route '/users'
+// users controllers route '/users'
 router.use('/users', userController);
 
 // TODO set user data controllers route '/data'

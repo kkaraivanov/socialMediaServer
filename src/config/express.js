@@ -7,12 +7,12 @@ const route = require('../controllers/route');
 const bars = handlebars.create(hbs.config);
 
 function init(app) {
-    // setup the view engine
+    // view engine
     app.engine(hbs.name, bars.engine)
     app.set('view engine', hbs.name);
     app.set('views', hbs.handlebarsPath);
     
-    // setup the body parser
+    // the body parser
     app.use(bodyParser.json(
         {
             limit: "50mb"
@@ -24,10 +24,10 @@ function init(app) {
         }
     ));
 
-    // setup the static files
+    // static files
     app.use(express.static(static.path));
 
-    //TODO setup the routes
+    // the routes
     app.use(route)
 }
 
