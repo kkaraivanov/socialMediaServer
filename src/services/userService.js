@@ -20,6 +20,37 @@ async function create(username, email, password) {
     }
 }
 
+async function getUser(userObj) {
+    console.log(userObj);
+    const user = await User.findOne({ email: userObj.email }).exec();
+
+    if (user == null) {
+        throw {
+            statusCode: 404,
+            message: 'Incorrect email or password!'
+        }
+    }
+
+    if (user.isDeleted) {
+        throw {
+            statusCode: 404,
+            message: 'Invalid user!'
+        }
+    }
+
+    const passwordIsMatches = await user.checkPasswor(userObj.password);
+
+    if (!passwordIsMatches) {
+        throw {
+            statusCode: 404,
+            message: 'Incorrect email or password!'
+        }
+    }
+
+    return user;
+}
+
 module.exports = {
     create,
+    getUser
 }

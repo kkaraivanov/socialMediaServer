@@ -1,4 +1,5 @@
 const service = require('../services/userService');
+const { token } = require('../services/tokenService');
 
 module.exports.register = async (req, res, next) => {
     try {
@@ -18,7 +19,45 @@ module.exports.register = async (req, res, next) => {
 }
 
 module.exports.login = async (req, res, next) => {
+    try {
+        const user = await service.getUser(req.body);
+        let userToken = await token.getByUserId(user);
 
+        if (!userToken) {
+            userToken = await token.createToken(user);
+        }
+
+        const cookies = req.cookies;
+        if (cookies?.jwt) {
+            userToken.token = '';
+
+            res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        }
+
+        const accessToken = token.generateJWT(user);
+        userToken.token = accessToken;
+        await userToken.save();
+
+        res.cookie('jwt', accessToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+
+        const {
+            __v,
+            password,
+            isDeleted,
+            createdAt,
+            updatedAt,
+            ...userData
+        } = user._doc;
+        return res.status(200).json({
+            ...userData,
+            //token: accessToken
+        })
+    } catch (error) {
+        const statusCode = error.statusCode || 401;
+        const message = { message: statusCode == 401 ? 'Unauthorized' : error.message }
+        res.status(statusCode).json(message);
+        next(error.message);
+    }
 }
 
 module.exports.logout = async (req, res, next) => {
