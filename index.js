@@ -21,6 +21,7 @@ app.use(cookieParser());
 
 // routes
 app.use('/api', checkAcceptCookie, require('./src/routes/init'));
+app.use('/api/auth', require('./src/routes/authorize'));
 
 const config = common[env];
 const server = app.listen(config.port, err => {
