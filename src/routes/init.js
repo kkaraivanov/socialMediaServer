@@ -1,21 +1,38 @@
 const router = require('express').Router();
+//const maxAge = 365 * 24 * 60 * 60;
+const maxAge = 1 * 1 * 30 * 60;
 
-router.get('/', (req ,res) => {
-    const cookieName = 'allow-sesion';
-    let cookieValue= 0;
-    const cookieOptions = {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'None',
-        maxAge: 24 * 60 * 60 * 1000 
+router.get('/', (req, res) => {
+    const request = {
+        allowSesion: true,
+        acceptCookie: req.acceptCookie.status
     };
     
-    const cookieExist = req.headers.cookie?.includes(cookieName);
-    if(cookieExist && cookieValue === 0){
-        cookieValue = 1
+    if (!req.cookies?.jwt) request.jwt = false;
+
+    res.status(200).json(request);
+});
+
+router.post('/', (req, res) => {
+    const { value } = req.body;
+    const request = {
+        acceptCookie: false
+    };
+    
+    if (!req.acceptCookie.status) {
+        request.acceptCookie = true;
+
+        if (value == 1) {
+            res.cookie("accept-cookies", 1, {
+                withCredentials: true,
+                httpOnly: false,
+                sameSite: 'lax',
+                maxAge: maxAge * 1000,
+            });
+        }
     }
     
-    res.cookie(cookieName, cookieValue, cookieOptions);
-    res.status(200).json();
-})
+    res.status(200).json(request);
+});
+
 module.exports = router

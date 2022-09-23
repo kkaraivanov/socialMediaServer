@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
-const { db } = require('./configDb')
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(db.url, db.options);
+        await mongoose.connect(process.env.MONGO_DB_URL,{
+            autoIndex: false,
+            serverSelectionTimeoutMS: 5000
+        });
     } catch (err) {
+        process.emit(1)
         throw {
             error: {
-                code: error.code,
-                codeName: error.codeName
+                code: err.code
             }
         }
     }
