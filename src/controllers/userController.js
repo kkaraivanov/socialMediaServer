@@ -61,5 +61,23 @@ module.exports.login = async (req, res, next) => {
 }
 
 module.exports.logout = async (req, res, next) => {
+    try {
+        const cookies = req.cookies;
+        if (!cookies?.jwt) return res.sendStatus(204);
+        const cookiesToken = cookies.jwt;
+        const foundToken = await token.getByTokenString(cookiesToken);
+        
+        if (!foundToken) {
+            res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+            return res.sendStatus(204);
+        }
 
+        foundToken.token = '';;
+        await foundToken.save();
+
+        res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
+        res.sendStatus(204);
+    } catch (error) {
+
+    }
 }

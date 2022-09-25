@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { body, validationResult } = require('express-validator');
 const { register, login, logout } = require('../controllers/userController');
+const validator = require('../middlewares/validator');
 
 // body validators
 const registerDataValidate = [
@@ -42,5 +43,6 @@ const loginDataValidate = [
 
 router.post('/register', registerDataValidate, register);
 router.post('/login', loginDataValidate, login);
+router.get('/logout', validator, logout);
 
 module.exports = router
