@@ -3,42 +3,36 @@ const { Profile } = require('./Profile');
 const bcrypt = require('bcrypt');
 const round = 11;
 
-const userSchema = new Schema({
-    email: {
-        type: String,
-        required: [true, 'Email is required'],
-        match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Invalid email format'],
-        validate: {
-            validator: function (v) {
-                return this.model('User').findOne({ email: v })
-                    .then(user => !user)
-            },
-            message: props => `Email ${props.value} is already used by another user. Use another email address.`
+const userSchema = new Schema(
+    {
+        email: {
+            type: String,
+            required: [true, 'Email is required'],
+            match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Invalid email format'],
+            validate: {
+                validator: function (v) {
+                    return this.model('User').findOne({ email: v })
+                        .then(user => !user)
+                },
+                message: props => `Email ${props.value} is already used by another user. Use another email address.`
+            }
+        },
+        password: {
+            type: String,
+            required: [true, 'Password is required'],
+            min: 5,
+            max: 12
+        },
+        roles: {
+            type: Array,
+            default: ['user']
+        },
+        isDeleted: {
+            type: Boolean,
+            default: false
         }
-    },
-    password: {
-        type: String,
-        required: [true, 'Password is required'],
-        min: 5,
-        max: 12
-    },
-    roles: {
-        type: Array,
-        default: ['user']
-    },
-    createdOn: {
-        type: Date,
-        default: Date.now
-    },
-    modifiedOn: {
-        type: Date,
-        default: Date.now
-    },
-    isDeleted: {
-        type: Boolean,
-        default: false
-    }
-});
+    }, { timestamps: true }
+);
 
 userSchema.index({ email: 1 }, {
     collation: {

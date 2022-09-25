@@ -21,6 +21,7 @@ module.exports.register = async (req, res, next) => {
 module.exports.login = async (req, res, next) => {
     try {
         const user = await service.getUser(req.body);
+        
         let userToken = await token.getByUserId(user);
 
         if (!userToken) {
@@ -48,9 +49,10 @@ module.exports.login = async (req, res, next) => {
             updatedAt,
             ...userData
         } = user._doc;
+        
         return res.status(200).json({
             ...userData,
-            //token: accessToken
+            token: accessToken
         })
     } catch (error) {
         const statusCode = error.statusCode || 401;
