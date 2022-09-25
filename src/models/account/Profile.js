@@ -1,6 +1,10 @@
 const { model, Schema, Types: { ObjectId } } = require('mongoose');
 
 const profileSchema = new Schema({
+    _userId: {
+        type: ObjectId,
+        ref: 'User'
+    },
     firstname: {
         type: String,
         default: ''
@@ -25,10 +29,14 @@ const profileSchema = new Schema({
         type: String,
         default: ''
     },
-    _userId: {
-        type: ObjectId,
-        ref: 'User'
-    }
+    followers: {
+        type: Array,
+        default: [],
+    },
+    followings: {
+        type: Array,
+        default: [],
+    },
 })
 
 exports.Profile = model('Profile', profileSchema);
