@@ -1,5 +1,6 @@
 const { Token } = require('../models/Token');
 const jwt = require('jsonwebtoken');
+// TODO: set expire jwt for production mode
 
 const generateJWT = (user) => {
     return jwt.sign({

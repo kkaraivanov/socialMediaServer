@@ -78,6 +78,6 @@ module.exports.logout = async (req, res, next) => {
         res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
         res.sendStatus(204);
     } catch (error) {
-
+        next(error)
     }
 }

@@ -21,7 +21,6 @@ async function create(username, email, password) {
 }
 
 async function getUser(userObj) {
-    console.log(userObj);
     const user = await User.findOne({ email: userObj.email }).exec();
 
     if (user == null) {
