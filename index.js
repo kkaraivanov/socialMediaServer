@@ -44,3 +44,21 @@ const server = app.listen(config.port, err => {
 
     console.info(`Server listening on port ${config.port}...`);
 });
+
+const io = socketio(server, {
+    cors: {
+        // origin: 'http://localhost:3000',
+        methods: ['GET", "POST'],
+        credentials: true,
+    },
+});
+
+io.on('connect', (socket) => {
+    socket.on('load-user', ({ id }) => {
+        console.log('Test: ', id)
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Disconnect user: ')
+    })
+})
