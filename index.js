@@ -1,14 +1,14 @@
 require('dotenv').config();
+const colors = require("colors");
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
-const colors = require("colors");
 const env = process.env.NODE_ENV || 'development';
 const common = require('./src/config/common')
 const connectDB = require('./src/config/database');
 const corsOptions = require('./src/config/corsOptions');
-const io = require('./src/services/ws/socketService')();
+const io = require('./src/services/modules/socketService')();
 const { checkAcceptCookie } = require('./src/middlewares/acceptCookies');
 const { guards } = require('./src/middlewares/guards');
 
@@ -29,10 +29,10 @@ app.use('/api/auth', require('./src/routes/authorize'));
 const config = common[env];
 const server = app.listen(config.port, err => {
     if (err) {
-        console.info(`${err}`.red.bold);
+        console.log(`${err}`.red.bold);
         return;
     };
-    
+
     console.log(`Server listening on port ${config.port}...`.cyan);
 });
 
