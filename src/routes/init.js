@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
         allowSesion: true,
         acceptCookie: req.acceptCookie.status
     };
-    
+
     if (!req.cookies?.jwt) request.jwt = false;
 
     res.status(200).json(request);
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
     const request = {
         acceptCookie: false
     };
-    
+
     if (!req.acceptCookie.status) {
         request.acceptCookie = true;
 
@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
             });
         }
     }
-    
+
     res.status(200).json(request);
 });
 

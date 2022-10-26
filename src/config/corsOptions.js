@@ -1,12 +1,19 @@
-const allowedOrigins = require('./allowedOrigins');
-const allowedMethods = require('./allowedMethods');
+const allowedMethods = [
+    "GET",
+    "POST",
+    "DELETE",
+    "UPDATE",
+    "PUT",
+    "PATCH"
+];
 
 const corsOptions = {
     origin: (origin, callback) => {
-        if (allowedOrigins.indexOf(origin) !== -1) {
+        const origins = process.env.ORIGINS;
+        if (origins.indexOf(origin) !== -1) {
             callback(null, true)
         } else {
-            callback('Origin is not allowed!')
+            callback(`Origin ${origin} is not allowed!`.red.bold)
         }
     },
     credentials: true,
